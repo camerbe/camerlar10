@@ -22,4 +22,5 @@ Route::apiResources([
     "roles"=>\App\Http\Controllers\Api\RoleController::class,
     "typepubs"=>\App\Http\Controllers\Api\TypePubController::class,
     "categories"=>\App\Http\Controllers\Api\CategorieController::class,
+    "rubriques"=>\App\Http\Controllers\Api\RubriqueController::class,
 ]);

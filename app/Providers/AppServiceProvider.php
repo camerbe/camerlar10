@@ -14,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
         $this->RoleRepoRegister();
         $this->TypePubRepoRegister();
         $this->CategorieRepoRegister();
+        $this->RubriqueRepoRegister();
     }
 
     /**
@@ -31,5 +32,8 @@ class AppServiceProvider extends ServiceProvider
     }
     public function CategorieRepoRegister(){
         return $this->app->bind('App\Repositories\BaseRepository','App\Repositories\CategorieRepository');
+    }
+    public function RubriqueRepoRegister(){
+        return $this->app->bind('App\Repositories\BaseRepository','App\Repositories\RubriqueRepository');
     }
 }

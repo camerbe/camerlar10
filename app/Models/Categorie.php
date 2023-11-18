@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Cache;
 
 class Categorie extends Model
@@ -28,7 +29,7 @@ class Categorie extends Model
             Cache::forget('categorie-list');
         });
     }
-    public function categorie(){
-        return $this->belongsTo(Categorie::class);
+    public function rubrique():BelongsTo {
+        return $this->belongsTo(Rubrique::class);
     }
 }
