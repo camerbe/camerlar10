@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('imageheigth')->nullable();
             $table->string('slug',300)->unique();
             $table->dateTime('dateparution')->index();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('rubrique_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('rubrique_id')->references('id')->on('rubriques');
             //$table->foreign('pays_id')->references('code')->on('pays');

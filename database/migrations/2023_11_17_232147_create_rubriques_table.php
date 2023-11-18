@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('rubrique',100);
             $table->string('slugrubrique');
+            $table->unsignedBigInteger('categorie_id');
             $table->foreign('categorie_id')->references('id')->on('categories');
         });
     }

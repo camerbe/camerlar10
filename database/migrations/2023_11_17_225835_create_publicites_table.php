@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->date('datefin');
             $table->text('publicite');
+            $table->unsignedBigInteger('typepub_id');
             $table->foreign('typepub_id')->references('id')->on('typepubs');
-            
+
         });
     }
 
