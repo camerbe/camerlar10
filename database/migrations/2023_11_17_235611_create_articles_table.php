@@ -24,8 +24,10 @@ return new class extends Migration
             $table->dateTime('dateparution')->index();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('rubrique_id');
+            $table->char('pays_code');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('rubrique_id')->references('id')->on('rubriques');
+            $table->foreign('pays_code')->references('code')->on('pays');
             //$table->foreign('pays_id')->references('code')->on('pays');
         });
     }
