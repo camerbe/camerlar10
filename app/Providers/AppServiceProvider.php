@@ -17,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
         $this->RubriqueRepoRegister();
         $this->PubliciteRepoRegister();
         $this->VideoRepoRegister();
+        $this->ArticleRepoRegister();
     }
 
     /**
@@ -43,5 +44,8 @@ class AppServiceProvider extends ServiceProvider
     }
     public function VideoRepoRegister(){
         return $this->app->bind('App\Repositories\BaseRepository','App\Repositories\VideoRepository');
+    }
+    public function ArticleRepoRegister(){
+        return $this->app->bind('App\Repositories\BaseRepository','App\Repositories\ArticleRepository');
     }
 }

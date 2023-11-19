@@ -19,10 +19,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 */
 Route::apiResources([
-    "roles"=>\App\Http\Controllers\Api\RoleController::class,
-    "typepubs"=>\App\Http\Controllers\Api\TypePubController::class,
+    "articles"=>\App\Http\Controllers\Api\ArticleController::class,
     "categories"=>\App\Http\Controllers\Api\CategorieController::class,
-    "rubriques"=>\App\Http\Controllers\Api\RubriqueController::class,
     "publicites"=>\App\Http\Controllers\Api\PubliciteController::class,
+    "roles"=>\App\Http\Controllers\Api\RoleController::class,
+    "rubriques"=>\App\Http\Controllers\Api\RubriqueController::class,
+    "typepubs"=>\App\Http\Controllers\Api\TypePubController::class,
     "videos"=>\App\Http\Controllers\Api\VideoController::class,
 ]);

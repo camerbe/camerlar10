@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\CategorieRepository;
+use App\Repositories\ArticleRepository;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CategorieController extends Controller
+class ArticleController extends Controller
 {
-    protected CategorieRepository $categorieRepository;
+    protected ArticleRepository $articleRepository;
     /**
-     * Contructor of the resource.
+     * Constructor of the resource.
      */
-    public function __construct(CategorieRepository $categorierepository)
+    public function __construct(ArticleRepository $articlerepository)
     {
-        $this->categorieRepository=$categorierepository;
+        $this->articleRepository=$articlerepository;
     }
 
     /**
@@ -24,17 +24,17 @@ class CategorieController extends Controller
     public function index()
     {
         //
-        $categories=$this->categorieRepository->findAll();
-        if($categories){
+        $articles=$this->articleRepository->findAll();
+        if($articles){
             return response()->json([
                 "sucess"=>true,
-                "data"=>$categories,
-                "message"=>"Liste des Catégories"
+                "data"=>$articles,
+                "message"=>"Liste des articles"
             ],Response::HTTP_FOUND);
         }
         return response()->json([
-                "sucess"=>false,
-                "message"=>"Pas de catégorie trouvé"
+            "sucess"=>false,
+            "message"=>"Pas d'article trouvé"
         ],Response::HTTP_NOT_FOUND);
     }
 
@@ -44,7 +44,6 @@ class CategorieController extends Controller
     public function create()
     {
         //
-
     }
 
     /**
@@ -53,37 +52,37 @@ class CategorieController extends Controller
     public function store(Request $request)
     {
         //
-        $categorie=$this->categorieRepository->create($request->all());
-        if($categorie){
+        $article=$this->articleRepository->create($request->all());
+        if($article){
             return response()->json([
                 "sucess"=>true,
-                "data"=>$categorie,
-                "message"=>"Catégorie inserée"
+                "data"=>$article,
+                "message"=>"Article inseré"
             ],Response::HTTP_CREATED);
         }
         return response()->json([
             "sucess"=>false,
-            "message"=>"Erreur lors de l'insertion d'une catégorie"
+            "message"=>"Erreur lors de l'insertion d'un article"
         ],Response::HTTP_NOT_FOUND);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
         //
-        $categorie=$this->categorieRepository->findById($id);
-        if($categorie){
+        $article=$this->articleRepository->findById($id);
+        if($article){
             return response()->json([
                 "sucess"=>true,
-                "data"=>$categorie,
-                "message"=>"Catégorie trouvée"
+                "data"=>$article,
+                "message"=>"Article trouvé"
             ],Response::HTTP_OK);
         }
         return response()->json([
             "sucess"=>false,
-            "message"=>"Catégorie inexistante"
+            "message"=>"Article inexistant"
         ],Response::HTTP_NOT_FOUND);
     }
 
@@ -98,14 +97,14 @@ class CategorieController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
         //
-        $categorie=$this->categorieRepository->update($request->all(),$id);
-        if($categorie){
+        $article=$this->articleRepository->update($request->all(),$id);
+        if($article){
             return response()->json([
                 "sucess"=>true,
-                "data"=>$categorie,
+                "data"=>$article,
                 "message"=>"Mise à jour effectuée"
             ],Response::HTTP_OK);
         }
@@ -121,8 +120,8 @@ class CategorieController extends Controller
     public function destroy($id)
     {
         //
-        $categorie=$this->categorieRepository->delete($id);
-        if($categorie>0){
+        $article=$this->articleRepository->delete($id);
+        if($article>0){
             return response()->json([
                 "sucess"=>true,
                 "message"=>"Suppression réussie"
