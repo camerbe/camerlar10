@@ -23,4 +23,6 @@ Route::apiResources([
     "typepubs"=>\App\Http\Controllers\Api\TypePubController::class,
     "categories"=>\App\Http\Controllers\Api\CategorieController::class,
     "rubriques"=>\App\Http\Controllers\Api\RubriqueController::class,
+    "publicites"=>\App\Http\Controllers\Api\PubliciteController::class,
+    "videos"=>\App\Http\Controllers\Api\VideoController::class,
 ]);

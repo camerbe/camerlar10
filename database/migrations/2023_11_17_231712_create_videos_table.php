@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
-            $table->string('titre',300);
-            $table->string('typevideo')->enum(['Camer','Sopie']);
-            
+            $table->string('titre');
+            $table->string('video');
+            $table->enum('typevideo',['Camer','Sopie']);
+            $table->timestamp('added_at', $precision = 0)->useCurrent();
         });
     }
 

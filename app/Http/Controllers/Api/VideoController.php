@@ -3,19 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\RubriqueRepository;
+use App\Models\Video;
+use App\Repositories\VideoRepository;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class RubriqueController extends Controller
+class VideoController extends Controller
 {
-    protected RubriqueRepository  $rubriquerepository;
+    protected VideoRepository $videoRepository;
     /**
-     * Constructor of the resource.
+     * Display a listing of the resource.
      */
-    public function __construct(RubriqueRepository $rubriquerepository)
+    public function __construct(VideoRepository $videorepository)
     {
-        $this->rubriquerepository=$rubriquerepository;
+        $this->videoRepository=$videorepository;
     }
 
     /**
@@ -24,17 +25,17 @@ class RubriqueController extends Controller
     public function index()
     {
         //
-        $rubriques=$this->rubriquerepository->findAll();
-        if($rubriques){
+        $videos=$this->videoRepository->findAll();
+        if($videos){
             return response()->json([
                 "sucess"=>true,
-                "data"=>$rubriques,
-                "message"=>"Liste des rubriques"
+                "data"=>$videos,
+                "message"=>"Liste des vidéos"
             ],Response::HTTP_FOUND);
         }
         return response()->json([
             "sucess"=>false,
-            "message"=>"Pas de rubrique trouvée"
+            "message"=>"Pas de vidéo trouvée"
         ],Response::HTTP_NOT_FOUND);
     }
 
@@ -52,18 +53,17 @@ class RubriqueController extends Controller
     public function store(Request $request)
     {
         //
-
-        $rubrique=$this->rubriquerepository->create($request->all());
-        if($rubrique){
+        $video=$this->videoRepository->create($request->all());
+        if($video){
             return response()->json([
                 "sucess"=>true,
-                "data"=>$rubrique,
-                "message"=>"Rubrique inserée"
+                "data"=>$video,
+                "message"=>"Vidéo inserée"
             ],Response::HTTP_CREATED);
         }
         return response()->json([
             "sucess"=>false,
-            "message"=>"Erreur lors de l'insertion d'une rubrique"
+            "message"=>"Erreur lors de l'insertion d'une vidéo"
         ],Response::HTTP_NOT_FOUND);
     }
 
@@ -73,17 +73,17 @@ class RubriqueController extends Controller
     public function show($id)
     {
         //
-        $rubrique=$this->rubriquerepository->findById($id);
-        if($rubrique){
+        $video=$this->videoRepository->findById($id);
+        if($video){
             return response()->json([
                 "sucess"=>true,
-                "data"=>$rubrique,
-                "message"=>"Rubrique trouvée"
+                "data"=>$video,
+                "message"=>"Vidéo trouvée"
             ],Response::HTTP_OK);
         }
         return response()->json([
             "sucess"=>false,
-            "message"=>"Rubrique inexistante"
+            "message"=>"Vidéo inexistante"
         ],Response::HTTP_NOT_FOUND);
     }
 
@@ -101,11 +101,11 @@ class RubriqueController extends Controller
     public function update(Request $request,  $id)
     {
         //
-        $rubrique=$this->rubriquerepository->update($request->except(['id']),$id);
-        if($rubrique){
+        $video=$this->videoRepository->update($request->except(['id']),$id);
+        if($video){
             return response()->json([
                 "sucess"=>true,
-                "data"=>$rubrique,
+                "data"=>$video,
                 "message"=>"Mise à jour effectuée"
             ],Response::HTTP_OK);
         }
@@ -121,8 +121,8 @@ class RubriqueController extends Controller
     public function destroy($id)
     {
         //
-        $rubrique=$this->rubriquerepository->delete($id);
-        if($rubrique>0){
+        $video=$this->videoRepository->delete($id);
+        if($video>0){
             return response()->json([
                 "sucess"=>true,
                 "message"=>"Suppression réussie"

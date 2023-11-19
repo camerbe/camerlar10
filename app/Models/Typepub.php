@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Cache;
 
 class Typepub extends Model
@@ -28,7 +29,7 @@ class Typepub extends Model
             Cache::forget('typepub-list');
         });
     }
-    public function publicte(){
+    public function publicte():BelongsTo{
         return $this->belongsTo(Publicite::class);
     }
 }
