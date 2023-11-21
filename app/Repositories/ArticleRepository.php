@@ -52,11 +52,11 @@ class ArticleRepository extends BaseRepository
         return parent::findById($data->id);
     }
     public function findAll(){
-        if($article=Cache::get('article-list')){
+        if($article=Cache::get('admin-article-list')){
             return $article;
         }
         $article=Article::orderBy('dateparution','desc')->paginate(100);
-        Cache::set('article-list',$article,Carbon::now()->addMinute(60));
+        Cache::set('admin-article-list',$article,Carbon::now()->addMinute(60));
         return $article;
     }
 

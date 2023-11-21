@@ -16,7 +16,10 @@ return new class extends Migration
             $table->tinyText('titre');
             $table->mediumText('chapeau');
             $table->longText('article');
+            $table->unsignedBigInteger('hit');
             $table->string('image');
+            $table->string('source')->index();
+            $table->string('auteur')->index();
             $table->string('keyword')->nullable();
             $table->string('imagewidth')->nullable();
             $table->string('imageheigth')->nullable();
@@ -28,7 +31,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('rubrique_id')->references('id')->on('rubriques');
             $table->foreign('pays_code')->references('code')->on('pays');
-            //$table->foreign('pays_id')->references('code')->on('pays');
+            
         });
     }
 
