@@ -13,5 +13,9 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         //
+        factory(App\Models\User, 5)->create()->each(function ($user) {
+            $user->roles()->save(factory(App\Models\Role::class)->make());
+        });
     }
+    
 }
