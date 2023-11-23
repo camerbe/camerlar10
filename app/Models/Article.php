@@ -23,6 +23,9 @@ class Article extends Model
         'user_id',
         'rubrique_id',
         'pays_code',
+        'hit',
+        'source',
+        'auteur',
 
     ];
     public $timestamps = false;

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->tinyText('titre');
             $table->mediumText('chapeau');
             $table->longText('article');
-            $table->unsignedBigInteger('hit');
+            $table->unsignedBigInteger('hit')->default('0');
             $table->string('image');
             $table->string('source')->index();
             $table->string('auteur')->index();

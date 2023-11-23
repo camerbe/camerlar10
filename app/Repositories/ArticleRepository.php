@@ -56,7 +56,7 @@ class ArticleRepository extends BaseRepository
             return $article;
         }
         $article=Article::orderBy('dateparution','desc')->paginate(100);
-        Cache::set('admin-article-list',$article,Carbon::now()->addMinute(60));
+        Cache::set('admin-article-list',$article,Carbon::now()->addMinute(10));
         return $article;
     }
 

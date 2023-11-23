@@ -15,6 +15,9 @@ class RoleSeeder extends Seeder
     {
         //
         /*factory(Role::class,5)->created();*/
+        Role::factory()->count(2)->create()->each(function ($role) {
+            $company->contacts()->save(factory(App\Contact::class)->make());
+        });
         
     }
 }
