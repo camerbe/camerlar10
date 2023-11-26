@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Article;
+use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends Controller
@@ -52,18 +55,27 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         //
-        $article=$this->articleRepository->create($request->all());
-        if($article){
+        if(Auth::user()->can('create',Article::class)){
+            $article=$this->articleRepository->create($request->all());
+            if($article){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$article,
+                    "message"=>"Article inseré"
+                ],Response::HTTP_CREATED);
+            }
             return response()->json([
-                "sucess"=>true,
-                "data"=>$article,
-                "message"=>"Article inseré"
-            ],Response::HTTP_CREATED);
+                "sucess"=>false,
+                "message"=>"Erreur lors de l'insertion d'un article"
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Erreur lors de l'insertion d'un article"
-        ],Response::HTTP_NOT_FOUND);
+        else {
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé à insérer un article"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -72,18 +84,27 @@ class ArticleController extends Controller
     public function show($id)
     {
         //
-        $article=$this->articleRepository->findById($id);
-        if($article){
+        if(Auth::user()->can('view',User::class)){
+            $article=$this->articleRepository->findById($id);
+            if($article){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$article,
+                    "message"=>"Article trouvé"
+                ],Response::HTTP_OK);
+            }
             return response()->json([
-                "sucess"=>true,
-                "data"=>$article,
-                "message"=>"Article trouvé"
-            ],Response::HTTP_OK);
+                "sucess"=>false,
+                "message"=>"Article inexistant"
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Article inexistant"
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé à insérer un article"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -100,18 +121,27 @@ class ArticleController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $article=$this->articleRepository->update($request->all(),$id);
-        if($article){
+        if(Auth::user()->can('update',User::class)){
+            $article=$this->articleRepository->update($request->all(),$id);
+            if($article){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$article,
+                    "message"=>"Mise à jour effectuée"
+                ],Response::HTTP_OK);
+            }
             return response()->json([
-                "sucess"=>true,
-                "data"=>$article,
-                "message"=>"Mise à jour effectuée"
-            ],Response::HTTP_OK);
+                "sucess"=>false,
+                "message"=>"Erreur survenue lors de la mise à jour"
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Erreur survenue lors de la mise à jour"
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé à mettre à jour un article"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -120,16 +150,25 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         //
-        $article=$this->articleRepository->delete($id);
-        if($article>0){
+        if(Auth::user()->can('delete',User::class)){
+            $article=$this->articleRepository->delete($id);
+            if($article>0){
+                return response()->json([
+                    "sucess"=>true,
+                    "message"=>"Suppression réussie"
+                ],Response::HTTP_OK);
+            }
             return response()->json([
-                "sucess"=>true,
-                "message"=>"Suppression réussie"
-            ],Response::HTTP_OK);
+                "sucess"=>false,
+                "message"=>"Une erreur s'est produite..."
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Une erreur s'est produite..."
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé à supprimer un article"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 }

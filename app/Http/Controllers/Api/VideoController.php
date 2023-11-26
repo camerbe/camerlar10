@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Video;
 use App\Repositories\VideoRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class VideoController extends Controller
@@ -25,18 +27,27 @@ class VideoController extends Controller
     public function index()
     {
         //
-        $videos=$this->videoRepository->findAll();
-        if($videos){
+        if(Auth::user()->can('viewAny',User::class)){
+            $videos=$this->videoRepository->findAll();
+            if($videos){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$videos,
+                    "message"=>"Liste des vidéos"
+                ],Response::HTTP_FOUND);
+            }
             return response()->json([
-                "sucess"=>true,
-                "data"=>$videos,
-                "message"=>"Liste des vidéos"
-            ],Response::HTTP_FOUND);
+                "sucess"=>false,
+                "message"=>"Pas de vidéo trouvée"
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Pas de vidéo trouvée"
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -53,18 +64,27 @@ class VideoController extends Controller
     public function store(Request $request)
     {
         //
-        $video=$this->videoRepository->create($request->all());
-        if($video){
+        if(Auth::user()->can('create',User::class)){
+            $video=$this->videoRepository->create($request->all());
+            if($video){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$video,
+                    "message"=>"Vidéo inserée"
+                ],Response::HTTP_CREATED);
+            }
             return response()->json([
-                "sucess"=>true,
-                "data"=>$video,
-                "message"=>"Vidéo inserée"
-            ],Response::HTTP_CREATED);
+                "sucess"=>false,
+                "message"=>"Erreur lors de l'insertion d'une vidéo"
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Erreur lors de l'insertion d'une vidéo"
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -73,18 +93,27 @@ class VideoController extends Controller
     public function show($id)
     {
         //
-        $video=$this->videoRepository->findById($id);
-        if($video){
+        if(Auth::user()->can('view',User::class)){
+            $video=$this->videoRepository->findById($id);
+            if($video){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$video,
+                    "message"=>"Vidéo trouvée"
+                ],Response::HTTP_OK);
+            }
             return response()->json([
-                "sucess"=>true,
-                "data"=>$video,
-                "message"=>"Vidéo trouvée"
-            ],Response::HTTP_OK);
+                "sucess"=>false,
+                "message"=>"Vidéo inexistante"
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Vidéo inexistante"
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -101,18 +130,27 @@ class VideoController extends Controller
     public function update(Request $request,  $id)
     {
         //
-        $video=$this->videoRepository->update($request->except(['id']),$id);
-        if($video){
+        if(Auth::user()->can('update',User::class)){
+            $video=$this->videoRepository->update($request->except(['id']),$id);
+            if($video){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$video,
+                    "message"=>"Mise à jour effectuée"
+                ],Response::HTTP_OK);
+            }
             return response()->json([
-                "sucess"=>true,
-                "data"=>$video,
-                "message"=>"Mise à jour effectuée"
-            ],Response::HTTP_OK);
+                "sucess"=>false,
+                "message"=>"Erreur survenue lors de la mise à jour"
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Erreur survenue lors de la mise à jour"
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -121,16 +159,25 @@ class VideoController extends Controller
     public function destroy($id)
     {
         //
-        $video=$this->videoRepository->delete($id);
-        if($video>0){
+        if(Auth::user()->can('delete',User::class)){
+            $video=$this->videoRepository->delete($id);
+            if($video>0){
+                return response()->json([
+                    "sucess"=>true,
+                    "message"=>"Suppression réussie"
+                ],Response::HTTP_OK);
+            }
             return response()->json([
-                "sucess"=>true,
-                "message"=>"Suppression réussie"
-            ],Response::HTTP_OK);
+                "sucess"=>false,
+                "message"=>"Une erreur s'est produite..."
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Une erreur s'est produite..."
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 }

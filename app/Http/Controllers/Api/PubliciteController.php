@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Repositories\PubliciteRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class PubliciteController extends Controller
@@ -24,18 +26,27 @@ class PubliciteController extends Controller
     public function index()
     {
         //
-        $publicites=$this->publiciteRepository->findAll();
-        if($publicites){
+        if(Auth::user()->can('viewAny',User::class)){
+            $publicites=$this->publiciteRepository->findAll();
+            if($publicites){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$publicites,
+                    "message"=>"Liste des publicité"
+                ],Response::HTTP_FOUND);
+            }
             return response()->json([
-                "sucess"=>true,
-                "data"=>$publicites,
-                "message"=>"Liste des publicité"
-            ],Response::HTTP_FOUND);
+                "sucess"=>false,
+                "message"=>"Pas de publicité trouvée"
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Pas de publicité trouvée"
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -53,18 +64,27 @@ class PubliciteController extends Controller
     public function store(Request $request)
     {
         //
-        $publicite=$this->publiciteRepository->create($request->all());
-        if($publicite){
+        if(Auth::user()->can('create',User::class)){
+            $publicite=$this->publiciteRepository->create($request->all());
+            if($publicite){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$publicite,
+                    "message"=>"Publicité inserée"
+                ],Response::HTTP_CREATED);
+            }
             return response()->json([
-                "sucess"=>true,
-                "data"=>$publicite,
-                "message"=>"Publicité inserée"
-            ],Response::HTTP_CREATED);
+                "sucess"=>false,
+                "message"=>"Erreur lors de l'insertion d'une publicité"
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Erreur lors de l'insertion d'une publicité"
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -73,18 +93,24 @@ class PubliciteController extends Controller
     public function show($id)
     {
         //
-        $publicite=$this->publiciteRepository->findById($id);
-        if($publicite){
-            return response()->json([
-                "sucess"=>true,
-                "data"=>$publicite,
-                "message"=>"Publicité trouvée"
-            ],Response::HTTP_OK);
+        if(Auth::user()->can('view',User::class)){
+            $publicite=$this->publiciteRepository->findById($id);
+            if($publicite){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$publicite,
+                    "message"=>"Publicité trouvée"
+                ],Response::HTTP_OK);
+            }
+
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Publicité inexistante"
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -101,18 +127,27 @@ class PubliciteController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $publicite=$this->publiciteRepository->update($request->except(['id']),$id);
-        if($publicite){
+        if(Auth::user()->can('update',User::class)){
+            $publicite=$this->publiciteRepository->update($request->except(['id']),$id);
+            if($publicite){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$publicite,
+                    "message"=>"Mise à jour effectuée"
+                ],Response::HTTP_OK);
+            }
             return response()->json([
-                "sucess"=>true,
-                "data"=>$publicite,
-                "message"=>"Mise à jour effectuée"
-            ],Response::HTTP_OK);
+                "sucess"=>false,
+                "message"=>"Erreur survenue lors de la mise à jour"
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Erreur survenue lors de la mise à jour"
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -121,16 +156,22 @@ class PubliciteController extends Controller
     public function destroy($id)
     {
         //
-        $publicite=$this->publiciteRepository->delete($id);
-        if($publicite>0){
-            return response()->json([
-                "sucess"=>true,
-                "message"=>"Suppression réussie"
-            ],Response::HTTP_OK);
+        if(Auth::user()->can('delete',User::class)){
+            $publicite=$this->publiciteRepository->delete($id);
+            if($publicite>0){
+                return response()->json([
+                    "sucess"=>true,
+                    "message"=>"Suppression réussie"
+                ],Response::HTTP_OK);
+            }
+
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Une erreur s'est produite..."
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 }

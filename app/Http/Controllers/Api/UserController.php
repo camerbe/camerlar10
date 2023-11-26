@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -25,18 +27,27 @@ class UserController extends Controller
     public function index()
     {
         //
-        $users=$this->userRepository->findAll();
-        if($users){
+        if(Auth::user()->can('viewAny',User::class)){
+            $users=$this->userRepository->findAll();
+            if($users){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$users,
+                    "message"=>"Liste des utilisateurs"
+                ],Response::HTTP_FOUND);
+            }
             return response()->json([
-                "sucess"=>true,
-                "data"=>$users,
-                "message"=>"Liste des utilisateurs"
-            ],Response::HTTP_FOUND);
+                "sucess"=>false,
+                "message"=>"Pas d'utilisateur trouvé"
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Pas d'utilisateur trouvé"
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -53,18 +64,27 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         //
-        $user=$this->userRepository->create($request->all());
-        if($user){
+        if(Auth::user()->can('create',User::class)){
+            $user=$this->userRepository->create($request->all());
+            if($user){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$user,
+                    "message"=>"User inseré"
+                ],Response::HTTP_CREATED);
+            }
             return response()->json([
-                "sucess"=>true,
-                "data"=>$user,
-                "message"=>"User inseré"
-            ],Response::HTTP_CREATED);
+                "sucess"=>false,
+                "message"=>"Erreur lors de l'insertion d'un user"
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Erreur lors de l'insertion d'un user"
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -73,18 +93,27 @@ class UserController extends Controller
     public function show($id)
     {
         //
-        $user=$this->userRepository->findById($id);
-        if($user){
+        if(Auth::user()->can('view',User::class)){
+            $user=$this->userRepository->findById($id);
+            if($user){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$user,
+                    "message"=>"User trouvé"
+                ],Response::HTTP_OK);
+            }
             return response()->json([
-                "sucess"=>true,
-                "data"=>$user,
-                "message"=>"User trouvé"
-            ],Response::HTTP_OK);
+                "sucess"=>false,
+                "message"=>"User inexistant"
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"User inexistant"
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -101,18 +130,27 @@ class UserController extends Controller
     public function update(Request $request,  $id)
     {
         //
-        $user=$this->userRepository->update($request->all(),$id);
-        if($user){
+        if(Auth::user()->can('update',User::class)){
+            $user=$this->userRepository->update($request->all(),$id);
+            if($user){
+                return response()->json([
+                    "sucess"=>true,
+                    "data"=>$user,
+                    "message"=>"Mise à jour effectuée"
+                ],Response::HTTP_OK);
+            }
             return response()->json([
-                "sucess"=>true,
-                "data"=>$user,
-                "message"=>"Mise à jour effectuée"
-            ],Response::HTTP_OK);
+                "sucess"=>false,
+                "message"=>"Erreur survenue lors de la mise à jour"
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Erreur survenue lors de la mise à jour"
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -121,16 +159,25 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-        $user=$this->userRepository->delete($id);
-        if($user>0){
+        if(Auth::user()->can('delete',User::class)){
+            $user=$this->userRepository->delete($id);
+            if($user>0){
+                return response()->json([
+                    "sucess"=>true,
+                    "message"=>"Suppression réussie"
+                ],Response::HTTP_OK);
+            }
             return response()->json([
-                "sucess"=>true,
-                "message"=>"Suppression réussie"
-            ],Response::HTTP_OK);
+                "sucess"=>false,
+                "message"=>"Une erreur s'est produite..."
+            ],Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            "sucess"=>false,
-            "message"=>"Une erreur s'est produite..."
-        ],Response::HTTP_NOT_FOUND);
+        else{
+            return response()->json([
+                "sucess"=>false,
+                "message"=>"Pas autorisé"
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 }
