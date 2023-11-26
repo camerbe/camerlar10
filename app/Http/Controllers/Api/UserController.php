@@ -3,19 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\CategorieRepository;
+use App\Http\Requests\UserRequest;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CategorieController extends Controller
+class UserController extends Controller
 {
-    protected CategorieRepository $categorieRepository;
+    protected UserRepository $userRepository;
     /**
-     * Contructor of the resource.
+     * Constructor of the resource.
      */
-    public function __construct(CategorieRepository $categorierepository)
+    public function __construct(UserRepository $userrepository)
     {
-        $this->categorieRepository=$categorierepository;
+        $this->userRepository=$userrepository;
     }
 
     /**
@@ -24,17 +25,17 @@ class CategorieController extends Controller
     public function index()
     {
         //
-        $categories=$this->categorieRepository->findAll();
-        if($categories){
+        $users=$this->userRepository->findAll();
+        if($users){
             return response()->json([
                 "sucess"=>true,
-                "data"=>$categories,
-                "message"=>"Liste des Catégories"
+                "data"=>$users,
+                "message"=>"Liste des utilisateurs"
             ],Response::HTTP_FOUND);
         }
         return response()->json([
-                "sucess"=>false,
-                "message"=>"Pas de catégorie trouvé"
+            "sucess"=>false,
+            "message"=>"Pas d'utilisateur trouvé"
         ],Response::HTTP_NOT_FOUND);
     }
 
@@ -44,26 +45,25 @@ class CategorieController extends Controller
     public function create()
     {
         //
-
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         //
-        $categorie=$this->categorieRepository->create($request->all());
-        if($categorie){
+        $user=$this->userRepository->create($request->all());
+        if($user){
             return response()->json([
                 "sucess"=>true,
-                "data"=>$categorie,
-                "message"=>"Catégorie inserée"
+                "data"=>$user,
+                "message"=>"User inseré"
             ],Response::HTTP_CREATED);
         }
         return response()->json([
             "sucess"=>false,
-            "message"=>"Erreur lors de l'insertion d'une catégorie"
+            "message"=>"Erreur lors de l'insertion d'un user"
         ],Response::HTTP_NOT_FOUND);
     }
 
@@ -73,17 +73,17 @@ class CategorieController extends Controller
     public function show($id)
     {
         //
-        $categorie=$this->categorieRepository->findById($id);
-        if($categorie){
+        $user=$this->userRepository->findById($id);
+        if($user){
             return response()->json([
                 "sucess"=>true,
-                "data"=>$categorie,
-                "message"=>"Catégorie trouvée"
+                "data"=>$user,
+                "message"=>"User trouvé"
             ],Response::HTTP_OK);
         }
         return response()->json([
             "sucess"=>false,
-            "message"=>"Catégorie inexistante"
+            "message"=>"User inexistant"
         ],Response::HTTP_NOT_FOUND);
     }
 
@@ -98,14 +98,14 @@ class CategorieController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,  $id)
     {
         //
-        $categorie=$this->categorieRepository->update($request->all(),$id);
-        if($categorie){
+        $user=$this->userRepository->update($request->all(),$id);
+        if($user){
             return response()->json([
                 "sucess"=>true,
-                "data"=>$categorie,
+                "data"=>$user,
                 "message"=>"Mise à jour effectuée"
             ],Response::HTTP_OK);
         }
@@ -121,8 +121,8 @@ class CategorieController extends Controller
     public function destroy($id)
     {
         //
-        $categorie=$this->categorieRepository->delete($id);
-        if($categorie>0){
+        $user=$this->userRepository->delete($id);
+        if($user>0){
             return response()->json([
                 "sucess"=>true,
                 "message"=>"Suppression réussie"

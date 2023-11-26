@@ -36,16 +36,23 @@ class Article extends Model
             Cache::forget('admin-article-list');
             Cache::forget('CM');
             Cache::forget('NOTCM');
+            Cache::forget('mostReaded');
+            Cache::forget($this->model->pays_code.$this->model->rubrique_id);
+
         });
         Article::deleted(function($model){
             Cache::forget('admin-article-list');
             Cache::forget('CM');
             Cache::forget('NOTCM');
+            Cache::forget('mostReaded');
+            Cache::forget($this->model->pays_code.$this->model->rubrique_id);
         });
         Article::updated(function($model){
             Cache::forget('admin-article-list');
             Cache::forget('CM');
             Cache::forget('NOTCM');
+            Cache::forget('mostReaded');
+            Cache::forget($this->model->pays_code.$this->model->rubrique_id);
         });
     }
     public function users():HasMany{

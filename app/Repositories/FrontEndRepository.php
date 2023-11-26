@@ -53,29 +53,42 @@ class FrontEndRepository
             ->leftJoin('categories','categories.id','=','rubriques.categorie_id')
             ->select('*')->get();
     }
-    public function getNewsSameRubrique($rubrique)
+    public function getCountrySameRubrique($pays,$rubrique)
     {
 
-        if(Cache::has($rubrique)){
+        if(Cache::has($pays.$rubrique)){
             return Cache::get($rubrique)->take(5);
         }
-        Cache::remember($rubrique, now()->addHour(1),function() use ($rubrique) {
+        Cache::remember($pays.$rubrique,now()->addHour(1),function() use($pays,$rubrique){
+            return Article::where([
+                ['rubrique_id',$rubrique],
+                ['pays_code',$pays],
+                ['dateparution','<=', Carbon::now()],
+            ])->orderByDesc('dateparution')
+                ->select('*')->take(5)->get();
+        });
+        /*Cache::remember($rubrique, now()->addHour(1),function() use ($rubrique) {
             return Article::where('articles.rubrique_id',$rubrique)->where('dateparution','<=', now())->orderByDesc('dateparution')
                 ->leftJoin('pays','pays.code','=','articles.pays_code')
                 ->leftJoin('categories','categories.id','=','rubriques.categorie_id')
                 ->leftJoin('rubriques','rubriques.id','=','articles.rubrique_id')
                 ->select('*')->take(5)->get();
-        });
-        return Cache::get($rubrique)->take(5);
+        });*/
+        return Cache::get($pays.$rubrique)->take(5);
 
     }
-    /*public function findAll(){
-        if($article=Cache::get('article-list')){
-            return $article;
+    public function mostReaded(){
+        $cache="mostReaded";
+        if(Cache::has($cache)){
+            return Cache::get($cache)->take(5);
         }
-        $article=Article::orderBy('dateparution','desc')->paginate(100);
-        Cache::set('article-list',$article,Carbon::now()->addMinute(60));
-        return $article;
-    }*/
+        Cache::remember($cache,Carbon::now()->addHour(24),function(){
+            return Article::where([
+                ['dateparution', '<=', Carbon::now()],
+            ])->orderByDesc('hit')->take(5)->get();
+        });
+        return Cache::get($cache)->take(5);
+    }
+
 
 }
