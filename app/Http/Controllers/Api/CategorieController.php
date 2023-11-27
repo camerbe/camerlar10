@@ -43,7 +43,7 @@ class CategorieController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas de autorisé"
+                "message"=>"Pas de autorisé à lister les catégories"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -81,7 +81,7 @@ class CategorieController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas de autorisé à insérer une catégorie"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -110,7 +110,7 @@ class CategorieController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas de autorisé à éditer une catégorie"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -147,7 +147,7 @@ class CategorieController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas de autorisé à mettre une catégorie à jour"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -175,7 +175,7 @@ class CategorieController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à supprimer une catégorie"
             ],Response::HTTP_UNAUTHORIZED);
         }
 

@@ -101,7 +101,7 @@ class ArticleController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé à insérer un article"
+                "message"=>"Pas autorisé à éditer un article"
             ],Response::HTTP_UNAUTHORIZED);
         }
 

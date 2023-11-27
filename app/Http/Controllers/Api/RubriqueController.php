@@ -43,7 +43,7 @@ class RubriqueController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à lister les rubriques"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -80,7 +80,7 @@ class RubriqueController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à insérer une rubrique"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -109,7 +109,7 @@ class RubriqueController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à éditer une rubrique"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -146,7 +146,7 @@ class RubriqueController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé àmettre une rubrique à jour"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -174,7 +174,7 @@ class RubriqueController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à supprimer une rubrique"
             ],Response::HTTP_UNAUTHORIZED);
         }
 

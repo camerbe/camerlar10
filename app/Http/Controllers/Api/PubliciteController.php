@@ -43,7 +43,7 @@ class PubliciteController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à lister les publicités"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -81,7 +81,7 @@ class PubliciteController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à insérer une publicité"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -107,7 +107,7 @@ class PubliciteController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à éditer une publicité"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -144,7 +144,7 @@ class PubliciteController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à mettre une publicité à jour"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -169,7 +169,7 @@ class PubliciteController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à supprimer une publicité"
             ],Response::HTTP_UNAUTHORIZED);
         }
 

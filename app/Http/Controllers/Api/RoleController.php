@@ -44,7 +44,7 @@ class RoleController extends Controller
         else{
             return response()->json([
                 "sucess"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à lister les rôles"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -82,7 +82,7 @@ class RoleController extends Controller
         else{
             return response()->json([
                 "success"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à insérer un rôle"
             ],Response::HTTP_NOT_FOUND);
         }
 
@@ -111,7 +111,7 @@ class RoleController extends Controller
         else{
             return response()->json([
                 "success"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à éditer un rôle"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -149,7 +149,7 @@ class RoleController extends Controller
         else{
             return response()->json([
                 "success"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à mettre un rôle à jour"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
@@ -177,7 +177,7 @@ class RoleController extends Controller
         else{
             return response()->json([
                 "success"=>false,
-                "message"=>"Pas autorisé"
+                "message"=>"Pas autorisé à supprimer un rôle"
             ],Response::HTTP_UNAUTHORIZED);
         }
 
