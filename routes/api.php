@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('profile', [AuthController::class, 'profile']);
     Route::get('refresh', [AuthController::class, 'refreshToken']);
+    Route::get('logout', [AuthController::class, 'logout']);
+
     Route::apiResources([
         "articles"=>\App\Http\Controllers\Api\ArticleController::class,
         "categories"=>\App\Http\Controllers\Api\CategorieController::class,
@@ -31,6 +33,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         "typepubs"=>\App\Http\Controllers\Api\TypePubController::class,
         "videos"=>\App\Http\Controllers\Api\VideoController::class,
         "users"=>\App\Http\Controllers\Api\UserController::class,
+        
     ]);
 });
 

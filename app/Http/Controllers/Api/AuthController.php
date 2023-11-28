@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response as Reponse;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+use Carbon\Carbon;
+use App\Models\Role;
 
 class AuthController extends Controller
 {
@@ -34,10 +36,13 @@ class AuthController extends Controller
             ],Reponse::HTTP_UNAUTHORIZED);
         }
         $user = Auth::user();
+        
         return response()->json([
             'success' => true,
             'data' => $user,
             'token' => $token,
+            'role'=>Role::find($user->id)->role,
+            'expiresIn'=> Carbon::now()->addMinute(15)->timestamp,
             'message' => 'Login ok',
         ],Reponse::HTTP_OK);
 
