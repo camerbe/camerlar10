@@ -34,7 +34,7 @@ class UserController extends Controller
                     "sucess"=>true,
                     "data"=>$users,
                     "message"=>"Liste des utilisateurs"
-                ],Response::HTTP_FOUND);
+                ],Response::HTTP_OK);
             }
             return response()->json([
                 "sucess"=>false,

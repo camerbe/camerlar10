@@ -36,13 +36,13 @@ class AuthController extends Controller
             ],Reponse::HTTP_UNAUTHORIZED);
         }
         $user = Auth::user();
-        
+
         return response()->json([
             'success' => true,
             'data' => $user,
             'token' => $token,
             'role'=>Role::find($user->id)->role,
-            'expiresIn'=> Carbon::now()->addMinute(15)->timestamp,
+            'expiresIn'=> Carbon::now()->addMinute(15),
             'message' => 'Login ok',
         ],Reponse::HTTP_OK);
 
@@ -52,6 +52,7 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'data'=>$usrData,
+            'role'=>Role::find($usrData->id)->role,
             'message'=>"Détails du user",
         ],Reponse::HTTP_OK);
     }

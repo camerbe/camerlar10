@@ -55,7 +55,8 @@ class UserRepository extends BaseRepository
         }
         Cache::remember($cache,now()->addHour(1),function() use($cache){
             return User::orderBy('nom','asc')->orderBy('prenom','asc')
-                ->jsonPaginate();
+                ->leftjoin('roles','roles.id','=','users.role_id')
+                ->select('*')->get();
         });
         return Cache::get($cache);
     }
